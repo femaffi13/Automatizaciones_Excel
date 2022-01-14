@@ -226,11 +226,9 @@ df_adae = pd.DataFrame(dicc)
 #----------------AF - DATOTELEFONO1-----------------#
 lista = []
 for i in celular_1:
-    i = str(i)
-    if len(i) == 3:
+    if np.isnan(i) == True:
         lista.append(np.nan)
     else:
-        i = i.replace('.0', '')
         lista.append(i)
 
 df_af = pd.DataFrame({'DATOTELEFONO1' : lista})
@@ -257,11 +255,9 @@ df_agah = pd.DataFrame(dicc)
 #----------------AI - DATOTELEFONO2-----------------#
 lista = []
 for i in celular_2:
-    i = str(i)
-    if len(i) == 3:
+    if np.isnan(i) == True:
         lista.append(np.nan)
     else:
-        i = i.replace('.0', '')
         lista.append(i)
 
 df_ai = pd.DataFrame({'DATOTELEFONO2' : lista})
@@ -288,12 +284,10 @@ df_ajak = pd.DataFrame(dicc)
 #----------------AL - DATOTELEFONO3-----------------#
 lista = []
 for i in tel_fijo:
-    i = str(i)
-    if len(i) == 3:
+    if np.isnan(i) == True:
         lista.append(np.nan)
     else:
-        num = i.replace('.0', '')
-        lista.append(num)
+        lista.append(i)
 
 df_as = pd.DataFrame({'DATOTELEFONO3' : lista})
 
@@ -319,14 +313,23 @@ df_aman = pd.DataFrame(dicc_columnas)
 #----------------AO - DATOTELEFONO4-----------------#
 lista = []
 for i in tel_fijo_2:
-    i = str(i)
-    if len(i) == 3:
+    if np.isnan(i) == True:
         lista.append(np.nan)
     else:
-        num = i.replace('.0', '')
-        lista.append(num)
+        lista.append(i)
 
 df_ao = pd.DataFrame({'DATOTELEFONO4' : lista})
+
+#----------------Análisis de columnas teléfonos-----------------#
+titulo = 'Informe Teléfonos'
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+contador = 0
+for i in range(0, registros):
+    if (np.isnan(celular_1[i]) == True) and (np.isnan(celular_2[i]) == True) and (np.isnan(tel_fijo[i]) == True) and (np.isnan(tel_fijo_2[i]) == True):
+        contador += 1
+print(f'Cantidad de registros sin ningún teléfono: {contador}')
 
 #----------------AP,AQ,AR,AS,AT,AU-----------------#
 dicc_columnas = {

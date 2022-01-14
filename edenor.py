@@ -4,7 +4,7 @@ from datetime import datetime, timedelta #B
 import re     #Para evaluar el mail
 
 #Archivo a cargar
-archivo = 'Edenor/asigna_0501.xlsx'
+archivo = 'Edenor/asigna_0511.xlsx'
 df = pd.read_excel(archivo)
 
 titulo = 'Información general'
@@ -310,6 +310,17 @@ for i in tel_fijo_2:
 
 df_av = pd.DataFrame({'DATOTELEFONO4' : lista})
 
+#----------------Análisis de columnas-----------------#
+titulo = 'Informe Teléfonos'
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+contador = 0
+for i in range(0, registros):
+    if (np.isnan(celular_1[i]) == True) and (np.isnan(celular_2[i]) == True) and (np.isnan(tel_fijo[i]) == True) and (np.isnan(tel_fijo_2[i]) == True):
+        contador += 1
+print(f'Cantidad de registros sin ningún teléfono: {contador}')
+
 #----------------AW - TELEFONOSADICIONALES-----------------#
 cel_3 = df['CELULAR_3'].fillna('') #AI 
 cel_4 = df['CELULAR_4'].fillna('') #AJ
@@ -469,31 +480,6 @@ for i in range(0, registros):
 df_bg = pd.DataFrame({'ANEXO4' : lista})
 
 #----------------BH - ANEXO5-----------------#
-# vto = df['VTO_ULTIMA_FACTURA'] #G
-# lista_bh = []
-
-# for i in range(0, registros): 
-#     if i == np.nan:
-#         i = np.nan 
-#         lista_bh.append(i)
-
-#     else:
-#         fecha = vto[i]
-#         fecha = str(fecha)
-        
-#         año = fecha[0:4]
-#         mes = fecha[5:7]
-#         dia = fecha[8:10]
-
-#         cadena = f'OPERACION|VTO ULTIMA FC|{dia}_{mes}_{año}'
-#         lista_bh.append(cadena)
-
-# dicc = {
-#     'ANEXO5' : lista_bh
-# }
-
-# df_bh = pd.DataFrame(dicc)
-
 vto = df['VTO_ULTIMA_FACTURA'] #G
 lista = []
 
@@ -574,5 +560,5 @@ df_bc, df_bd, df_be, df_bf, df_bg,
 df_bh, df_bi, df_bj, df_bk, df_bl], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-df_concat.to_excel('Resultados/ESTUDIOALTAS0501.xlsx', index=False)
+df_concat.to_excel('Resultados/ESTUDIOALTAS0511.xlsx', index=False)
 print('Archivo creado correctamente')
