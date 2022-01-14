@@ -61,14 +61,18 @@ df_b = pd.DataFrame({'FECHA' : lista_b})
 
 #----------------C - NOMBRE-----------------#
 nombre_titular = df['NOM_CLI'] #P
-calle = df['CALLE'] #W
+calle = df['CALLE'].astype(str) #W
 num = df['NRO'].fillna(0).astype(int) #X
 dias_mora = df['DIAS_ATRAS'] #M
 
 lista = []
 for i in range(0, registros):
-    concatenacion = f'{nombre_titular[i]} / CALLE: {calle[i]} / NRO: {num[i]} / DDM: {dias_mora[i]}'
-    lista.append(concatenacion)
+    if (len(calle[i]) <= 3) and (num[i] == 0): 
+        concatenacion = f'{nombre_titular[i]} / SIN DIRECCION / DDM: {dias_mora[i]}'
+        lista.append(concatenacion)    
+    else: 
+        concatenacion = f'{nombre_titular[i]} / CALLE: {calle[i]} / NRO: {num[i]} / DDM: {dias_mora[i]}'
+        lista.append(concatenacion)
 
 df_c = pd.DataFrame({'NOMBRE' : lista})
 
@@ -96,8 +100,12 @@ df_fi = pd.DataFrame(dicc) #De f a i
 #----------------J - DOMICIILIO -----------------#
 lista = []
 for i in range(0, registros):
-    concatenacion = f'CALLE: {calle[i]} / NRO: {num[i]}'
-    lista.append(concatenacion)
+    if (len(calle[i]) <= 3) and (num[i] == 0): 
+        concatenacion = 'SIN DIRECCION'
+        lista.append(concatenacion)    
+    else: 
+        concatenacion = f'CALLE: {calle[i]} / NRO: {num[i]}'
+        lista.append(concatenacion)
 
 df_j = pd.DataFrame({'DOMICILIO' : lista})
 
@@ -126,16 +134,6 @@ df_l = pd.DataFrame({'PROVINCIA' : lista})
 #----------------M - CODIGOPOSTAL-----------------#
 cp = df['C_POSTAL'].fillna(0).astype(int) #AE
 df_m = pd.DataFrame(cp)
-
-# lista = []
-# for i in cp:
-#     i = str(i)
-#     if len(i) <= 3:
-#         lista.append('')
-#     else:
-#         lista.append(i[0:4])
-
-# df_m = pd.DataFrame({'CODIGOPOSTAL' : lista})
 
 #----------------N - LABORAL-----------------#
 df_n = pd.DataFrame({'LABORAL' : lista_vacia})
@@ -501,30 +499,30 @@ for i in dni:
 
 df_ba = pd.DataFrame({'ANEXO5' : lista})
 
-#----------------BB - ANEXO5-----------------#
+#----------------BB - ANEXO6-----------------#
 lista = []
 for i in range(0, registros):
     tipo_doc = 'OPERACION|CONSUMO INCLUIDO ULTIMA FACTURA|'
     lista.append(tipo_doc)
 
-df_bb = pd.DataFrame({'ANEXO5' : lista})
+df_bb = pd.DataFrame({'ANEXO6' : lista})
 
-#----------------BC - ANEXO6-----------------#
+#----------------BC - ANEXO7-----------------#
 asignacion = df['NUEVA_ASIGNACION'] #BR
 asignacion = asignacion.fillna('')
 
 lista = []
 for i in asignacion: 
     if (i == 1):
-        lista.append(f'OPERACION|ASIGNACION|NUEVO')
+        lista.append(f'OPERACION|ASIGNACION|NUEVA')
     elif (i == 0): 
         lista.append(f'OPERACION|ASIGNACION|STOCK')
     else:
         lista.append(np.nan)
 
-df_bc = pd.DataFrame({'ANEXO6' : lista})
+df_bc = pd.DataFrame({'ANEXO7' : lista})
 
-#----------------BD - ANEXO7-----------------#
+#----------------BD - ANEXO8-----------------#
 vencimiento = df['FEC_VENC1'] #O
 
 lista = []
@@ -543,15 +541,15 @@ for i in vencimiento:
         cadena = f'OPERACION|FECHA FACTURA PROXIMO VENCIMIENTO|{dia}_{mes}_{año}'
         lista.append(cadena)
 
-df_bd = pd.DataFrame({'ANEXO7' : lista})
+df_bd = pd.DataFrame({'ANEXO8' : lista})
 
-#----------------BE - ANEXO8-----------------#
+#----------------BE - ANEXO9-----------------#
 lista = []
 for i in range(0, registros):
     tipo_doc = 'OPERACION|FECHA FACTURA VENCIDA|'
     lista.append(tipo_doc)
 
-df_be = pd.DataFrame({'ANEXO8' : lista})
+df_be = pd.DataFrame({'ANEXO9' : lista})
 
 #----------------BF - IDCOMPANIA-----------------#
 lista_45 = []

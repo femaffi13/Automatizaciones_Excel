@@ -4,7 +4,7 @@ from datetime import datetime, timedelta #B
 import re     #Para evaluar el mail
 
 #Archivo a cargar
-archivo = 'Edenor/asigna_0511.xlsx'
+archivo = 'Edenor/asigna_0211.xlsx'
 df = pd.read_excel(archivo)
 
 #-------------Validador--------------#
@@ -562,11 +562,11 @@ lista = []
 for i in asignacion: 
     i = int(i)
     if (i == 0):
-        lista.append(f'OPERACION|ASIGNACION|NUEVO')
+        lista.append(f'OPERACION|ASIGNACION|NUEVA')
     elif (i >= 1 and i <= 60): 
         lista.append(f'OPERACION|ASIGNACION|STOCK')
     elif i > 60:
-        lista.append(f'OPERACION|ASIGNACION|NUEVO')
+        lista.append(f'OPERACION|ASIGNACION|NUEVA')
 
 df_bk = pd.DataFrame({'ANEXO8' : lista})
 
