@@ -7,6 +7,30 @@ import re     #Para evaluar el mail
 archivo = 'Edesur/original_asigna1001.xlsx'
 df = pd.read_excel(archivo)
 
+#-------------Validador--------------#
+titulo = 'Validador de columnas'
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+columnas = df.columns 
+columnas_validas = ['RUE', 'NOM_CLI',
+'NRO_PART', 'C_POSTAL', 'SALDO_GESTIONABLE',
+'SALDO_TOTAL', 'TARIFA', 'movil',
+'fijo', 'NRO_TELEF', 'movil2', 
+'email', 'email2', 'TIPO_CLIENTE',
+'EST_CLI', 'MEDIDOR', 'NRO_DOC',
+'NUEVA_ASIGNACION', 'FEC_VENC1']
+
+for i in columnas:
+    if i in columnas_validas:
+        columnas_validas.remove(i)
+
+if not columnas_validas:
+    print('Columnas válidas')
+else: 
+    print(f'Valores faltantes: {columnas_validas}')
+
+#-------------Info general--------------#
 titulo = 'Información general'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -17,7 +41,6 @@ print(f'Cantidad de registros: {registros}')
 
 #Cantidad de columnas
 print(f'Cantidad de columnas: {df.shape[1]}')
-
 
 #-------------Utilidades--------------#
 lista_vacia = []
@@ -330,6 +353,7 @@ for i in range(0, registros):
     if (np.isnan(celular_1[i]) == True) and (np.isnan(celular_2[i]) == True) and (np.isnan(tel_fijo[i]) == True) and (np.isnan(tel_fijo_2[i]) == True):
         contador += 1
 print(f'Cantidad de registros sin ningún teléfono: {contador}')
+print(f'Representa un {round(contador/registros*100, 2)}% del total ')
 
 #----------------AP,AQ,AR,AS,AT,AU-----------------#
 dicc_columnas = {

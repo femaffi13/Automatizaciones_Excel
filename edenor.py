@@ -7,6 +7,33 @@ import re     #Para evaluar el mail
 archivo = 'Edenor/asigna_0511.xlsx'
 df = pd.read_excel(archivo)
 
+#-------------Validador--------------#
+titulo = 'Validador de columnas'
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+columnas = df.columns 
+columnas_validas = ['ID_CUENTA', 'NOMBRE_TITULAR',
+'DIRECCION', 'DIAS_MORA', 'PISO',
+'DEPTO_OFICINA', 'BARRIO_REFERENCIA', 'LOCALIDAD',
+'SALDO_BALANCE', 'SALDO_EXIGIBLE', 'TARIFA', 
+'SITUACION_SUMINISTRO', 'CELULAR_1', 'CELULAR_2',
+'FIJO_1', 'FIJO_2', 'CELULAR_3',
+'CELULAR_4', 'CELULAR_5', 'CELULAR_6', 'CELULAR_7',
+'CELULAR_8', 'CELULAR_9', 'CELULAR_10', 'OTRO_1',
+'OTRO_2', 'OTRO_3', 'MAIL_1', 'MAIL_2', 'MAIL_3', 
+'NUMERO_DOCUMENTO', 'ESTADO_CLIENTE', 'VTO_ULTIMA_FACTURA',
+'ESTADO_SUS', 'CANTIDAD_FACTURAS_VENCIDAS', 'DIAS_ASIGNACION']
+
+for i in columnas:
+    if i in columnas_validas:
+        columnas_validas.remove(i)
+
+if not columnas_validas:
+    print('Columnas válidas')
+else: 
+    print(f'Valores faltantes: {columnas_validas}')
+
 titulo = 'Información general'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -310,7 +337,7 @@ for i in tel_fijo_2:
 
 df_av = pd.DataFrame({'DATOTELEFONO4' : lista})
 
-#----------------Análisis de columnas-----------------#
+#----------------Análisis de columnas teléfonos-----------------#
 titulo = 'Informe Teléfonos'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -320,6 +347,7 @@ for i in range(0, registros):
     if (np.isnan(celular_1[i]) == True) and (np.isnan(celular_2[i]) == True) and (np.isnan(tel_fijo[i]) == True) and (np.isnan(tel_fijo_2[i]) == True):
         contador += 1
 print(f'Cantidad de registros sin ningún teléfono: {contador}')
+print(f'Representa un {round(contador/registros*100, 2)}% del total ')
 
 #----------------AW - TELEFONOSADICIONALES-----------------#
 cel_3 = df['CELULAR_3'].fillna('') #AI 
