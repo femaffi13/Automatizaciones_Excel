@@ -377,20 +377,52 @@ for nombre_columna, contenido in df_mails.items():
     contenido = contenido.apply(str)
 
     #Recorro cada valor
-    for x in contenido: 
-
-        if (x == 'nan' or x == 'sinmail@sinmail.com' or x == '1@1.com'):
-            nulos.append(x)
+    for i in contenido: 
+        if (i == 'nan' or i == 'sinmail@sinmail.com' or i == '1@1.com'):
+            nulos.append(i)
         
         else: 
-           expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
-           variable = re.match(expresion_regular, x)
+            if '.@' in i:
+                i = i.replace('.@', '@')
+                
+            if 'á' in i:
+                i = i.replace('á', 'a')
+                
+            if 'é' in i:
+                i = i.replace('é', 'e')
 
-           if variable is None: 
-                incorrectos.append(x)
+            if 'í' in i:
+                i = i.replace('í', 'i')
+            
+            if 'ó' in i:
+                i = i.replace('ó', 'o')
 
-           else:
-                correctos.append(x)
+            if 'ú' in i:
+                i = i.replace('ú', 'u')
+
+            if 'ñ' in i:
+                i = i.replace('ñ', 'n')
+
+            if 'mail' in i[-4:]:
+                i = i.replace('mail', 'mail.com')
+
+            if 'outlook' in i[-7:]:
+                i = i.replace('outlook', 'outlook.com')
+
+            if 'hot' in i[-3:]:
+                i = i.replace('hot', 'hotmail.com')
+
+            if ' ' in i:
+                i = i.replace(' ', '.')
+                
+            expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+            variable = re.match(expresion_regular, i)
+
+            if variable is None: 
+                incorrectos.append(i)
+
+            else:
+                correctos.append(i)
 
 titulo = 'Informe Mails'
 print('')
