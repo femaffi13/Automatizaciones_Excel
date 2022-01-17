@@ -1,6 +1,6 @@
-# Edenor
+# Edesur
 
-El código **edenor.py** consiste en automatizar la tarea de análisis y procesamiento de columnas a partir del excel "asigna" originando un nuevo archivo de "altas" para luego ser subido al sistema de LOAN.  
+El código **edesur.py** consiste en automatizar la tarea de análisis y procesamiento de columnas a partir del excel "asigna" originando un nuevo archivo de "altas" para luego ser subido al sistema de LOAN.  
 El programa a su vez da un informe general de la cantidad de filas y columnas del archivo a analizar, cantidad y porcentaje de registros sin ningún teléfono y otro informe sobre los mails analizados donde se muestra la cantidad de correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos de mails se detecta. 
 
 ## Librerías Usadas:  
