@@ -1,13 +1,15 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta #B
-import re     #Para evaluar el mail
+from datetime import datetime, timedelta 
+import re   #Para evaluar por expresiones regulares el mail
 
 #Archivo a cargar
 archivo = 'Edenor/asigna_0511.xlsx'
 df = pd.read_excel(archivo)
 
 #-------------Validador--------------#
+#Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
+#archivo a evaluar, si no se encuentra, se muestra cuál falta
 titulo = 'Validador de columnas'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -34,6 +36,7 @@ if not columnas_validas:
 else: 
     print(f'Valores faltantes: {columnas_validas}')
 
+#-------------Info general--------------#
 titulo = 'Información general'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -46,16 +49,17 @@ print(f'Cantidad de registros: {registros}')
 print(f'Cantidad de columnas: {df.shape[1]}')
 
 #-------------Utilidades--------------#
-lista_vacia = []
+lista_vacia = [] #Utilizada para varias columnas que deben estar vacías
 for i in range (0, registros):
     lista_vacia.append(np.nan)
 
 #-----------A - NUMEROOPERACION-----------#
-id_cuenta = df['ID_CUENTA'] #D
+id_cuenta = df['ID_CUENTA'] #En la columna D del archivo
 df_a = pd.DataFrame(id_cuenta)
 df_a.rename(columns={'ID_CUENTA':'NUMEROOPERACION'}, inplace=True)
 
 #----------------B - FECHA-----------------#
+#Toda la columna posee la fecha de hoy
 lista_b = []
 for i in range (0, registros):
     lista_b.append(datetime.today().strftime('%d/%m/%Y'))
@@ -63,9 +67,9 @@ for i in range (0, registros):
 df_b = pd.DataFrame({'FECHA' : lista_b})
 
 #----------------C - NOMBRE-----------------#
-nombre_titular = df['NOMBRE_TITULAR'] #S
-direccion = df['DIRECCION'] #U
-dias_mora = df['DIAS_MORA'] #J
+nombre_titular = df['NOMBRE_TITULAR'] #En la columna S del archivo
+direccion = df['DIRECCION'] #En la columna U del archivo
+dias_mora = df['DIAS_MORA'] #En la columna J del archivo
 
 lista = []
 for i in range(0, registros):
@@ -75,6 +79,7 @@ for i in range(0, registros):
 df_c = pd.DataFrame({'NOMBRE' : lista})
 
 #----------------D - TIPODOCUMENTO-----------------#
+#Columna completa de valor "DNI"
 lista = []
 for i in range(0, registros):
     tipo_doc = 'DNI'
@@ -83,6 +88,7 @@ for i in range(0, registros):
 df_d = pd.DataFrame({'TIPODOCUMENTO' : lista})
 
 #----------------E - DOCUMENTO-----------------#
+#Se coloca el NUMEROOPERACION
 df_e = df_a.rename(columns={'NUMEROOPERACION':'DOCUMENTO'})
 
 #----------------F,G,H,I - CUIL, ESTADOCIVIL, FECHANACIMIENTO, SEXO-----------------#
@@ -96,10 +102,10 @@ dicc = {
 df_fi = pd.DataFrame(dicc) #De f a i
 
 #----------------J - DOMICIILIO -----------------#
-direccion = df['DIRECCION'] #U
-piso = df['PISO'] #V
-depto = df['DEPTO_OFICINA'] #W
-barrio = df['BARRIO_REFERENCIA'] #X
+direccion = df['DIRECCION'] #En la columna U del archivo
+piso = df['PISO'] #En la columna V del archivo
+depto = df['DEPTO_OFICINA'] #En la columna W del archivo
+barrio = df['BARRIO_REFERENCIA'] #En la columna X del archivo
 
 lista = []
 for i in range(0, registros):
@@ -109,11 +115,12 @@ for i in range(0, registros):
 df_j = pd.DataFrame({'DOMICILIO' : lista})
 
 #----------------K - LOCALIDAD-----------------#
-localidad = df['LOCALIDAD'] #Y
+localidad = df['LOCALIDAD'] #En la columna Y del archivo
 
 df_k = pd.DataFrame(localidad)
 
 #----------------L - PROVINCIA-----------------#
+#Columna completa de valores 'BUENOS AIRES'
 lista = []
 for i in range(0, registros):
     prov = 'BUENOS AIRES'
@@ -145,7 +152,7 @@ dicc_columnas = {
 df_pt = pd.DataFrame(dicc_columnas)
 
 #----------------U - SALDOTOTAL-----------------#
-saldo = df['SALDO_BALANCE'] #F
+saldo = df['SALDO_BALANCE'] #En la columna F del archivo
 df_u = pd.DataFrame(saldo)
 df_u.rename(columns={'SALDO_BALANCE':'SALDOTOTAL'}, inplace=True)
 
@@ -153,19 +160,18 @@ df_u.rename(columns={'SALDO_BALANCE':'SALDOTOTAL'}, inplace=True)
 df_v = df_u.rename(columns={'SALDOTOTAL':'DEUDAVENCIDA'})
 
 #----------------W - PAGOMINIMO-----------------#
-col_w = df['SALDO_EXIGIBLE'] #E
+col_w = df['SALDO_EXIGIBLE'] #En la columna E del archivo
 df_w = pd.DataFrame(col_w)
 df_w.rename(columns={'SALDO_EXIGIBLE':'PAGOMINIMO'}, inplace=True)
 
 #----------------X - VTOIMPAGO-----------------#
-fechas = lista_b
-dias = dias_mora
+fechas = lista_b #Variable proveniente de la Sección B
+dias = dias_mora #Variable proveniente de la Sección C
 
 lista_fechas = []
 for fecha in fechas: 
     fecha = str(fecha)
-    fecha_cadena = fecha
-    fecha = datetime.strptime(fecha_cadena, '%d/%m/%Y')
+    fecha = datetime.strptime(fecha, '%d/%m/%Y')
     lista_fechas.append(fecha)
 
 lista_dias = []
@@ -189,9 +195,7 @@ for i in lista_3:
     fecha_final.append(formato)
 
 #Transformo a DataFrame
-dicc = {'VTOIMPAGO' : fecha_final}
-
-df_x = pd.DataFrame(dicc)
+df_x = pd.DataFrame({'VTOIMPAGO' : fecha_final})
 
 #----------------Y, Z, AA, AB, AC, AD, AE, AF, AG-----------------#
 dicc = {
@@ -209,7 +213,7 @@ dicc = {
 df_yag = pd.DataFrame(dicc)
 
 #----------------AH - TIPOPRODUCTO-----------------#
-col_ah = df['TARIFA'] #T
+col_ah = df['TARIFA'] #En la columna T del archivo
 df_ah = pd.DataFrame(col_ah)
 df_ah.rename(columns={'TARIFA':'TIPOPRODUCTO'}, inplace=True)
 
@@ -217,12 +221,12 @@ df_ah.rename(columns={'TARIFA':'TIPOPRODUCTO'}, inplace=True)
 df_ai = pd.DataFrame({'ARTICULO' : lista_vacia})
 
 #----------------AJ - SUCURSAL-----------------#
-aj = df['SITUACION_SUMINISTRO'] #M
+aj = df['SITUACION_SUMINISTRO'] #En la columna M del archivo
 df_aj = pd.DataFrame(aj)
 df_aj.rename(columns={'SITUACION_SUMINISTRO':'SUCURSAL'}, inplace=True)
 
 #----------------AK, AL - DESCRIPCIONTELEFONO1, TIPOTELEFONO1-----------------#
-celular_1 = df['CELULAR_1'] #AG
+celular_1 = df['CELULAR_1'] #En la columna AG del archivo
 
 lista = []
 for i in celular_1:
@@ -251,7 +255,7 @@ for i in celular_1:
 df_am = pd.DataFrame({'DATOTELEFONO1' : lista})
 
 #----------------AN, AO - DESCRIPCIONTELEFONO2, TIPOTELEFONO2-----------------#
-celular_2 = df['CELULAR_2'] #AH
+celular_2 = df['CELULAR_2'] #En la columna AH del archivo
 
 lista = []
 for i in celular_2:
@@ -280,7 +284,7 @@ for i in celular_2:
 df_ap = pd.DataFrame({'DATOTELEFONO2' : lista})
 
 #----------------AQ, AR - DESCRIPCIONTELEFONO3, TIPOTELEFONO3-----------------#
-tel_fijo = df['FIJO_1'] #AQ
+tel_fijo = df['FIJO_1'] #En la columna AQ del archivo
 
 lista = []
 for i in tel_fijo:
@@ -309,7 +313,7 @@ for i in tel_fijo:
 df_as = pd.DataFrame({'DATOTELEFONO3' : lista})
 
 #----------------AT, AU - DESCRIPCIONTELEFONO4, TIPOTELEFONO4-----------------#
-tel_fijo_2 = df['FIJO_2'] #AR
+tel_fijo_2 = df['FIJO_2'] #En la columna AR del archivo
 
 lista = []
 for i in tel_fijo_2:
@@ -386,6 +390,7 @@ dicc = {
 df_axbb = pd.DataFrame(dicc)
 
 #----------------EXPRESIONES REGULARES EMAILS-----------------#
+#Evalúa las columnas MAIL_1 a MAIL_3
 lista = []
 for i in range(1,4):
     col = f'MAIL_{i}'
@@ -473,7 +478,7 @@ df_mails = df_mails.replace(incorrectos, np.nan)
 df_mails = df_mails.replace(0, np.nan)
 
 #----------------BC - EMAIL-----------------#
-mail_1 = df_mails['MAIL_1'] #AV
+mail_1 = df_mails['MAIL_1'] #En la columna AV del archivo
 lista = []
 
 for i in mail_1:
@@ -486,7 +491,7 @@ for i in mail_1:
 df_bc = pd.DataFrame({'EMAIL' : lista})
 
 #----------------BD - ANEXO1-----------------#
-mail_2 = df_mails['MAIL_2'] #AW
+mail_2 = df_mails['MAIL_2'] #En la columna AW del archivo
 lista = []
 
 for i in mail_2: 
@@ -500,7 +505,7 @@ for i in mail_2:
 df_bd = pd.DataFrame({'ANEXO1' : lista})
 
 #----------------BE - ANEXO2-----------------#
-mail_3 = df_mails['MAIL_3'] #AW
+mail_3 = df_mails['MAIL_3'] #En la columna AX del archivo
 lista = []
 
 for i in mail_3: 
@@ -514,7 +519,7 @@ for i in mail_3:
 df_be = pd.DataFrame({'ANEXO2' : lista})
 
 #----------------BF - ANEXO3-----------------#
-dni = df['NUMERO_DOCUMENTO'] #P
+dni = df['NUMERO_DOCUMENTO'] #En la columna P del archivo
 lista = []
 
 for i in range(0, registros): 
@@ -527,7 +532,7 @@ for i in range(0, registros):
 df_bf = pd.DataFrame({'ANEXO3' : lista})
 
 #----------------BG - ANEXO4-----------------#
-estado = df['ESTADO_CLIENTE'] #Q
+estado = df['ESTADO_CLIENTE'] #En la columna Q del archivo
 lista = []
 
 for i in range(0, registros): 
@@ -540,7 +545,7 @@ for i in range(0, registros):
 df_bg = pd.DataFrame({'ANEXO4' : lista})
 
 #----------------BH - ANEXO5-----------------#
-vto = df['VTO_ULTIMA_FACTURA'] #G
+vto = df['VTO_ULTIMA_FACTURA'] #En la columna G del archivo
 lista = []
 
 for i in vto: 
@@ -561,7 +566,7 @@ for i in vto:
 df_bh = pd.DataFrame({'ANEXO5' : lista})
 
 #----------------BI - ANEXO6-----------------#
-estado_susp = df['ESTADO_SUS'] #R
+estado_susp = df['ESTADO_SUS'] #En la columna R del archivo
 lista = []
 
 for i in range(0, registros): 
@@ -574,7 +579,7 @@ for i in range(0, registros):
 df_bi = pd.DataFrame({'ANEXO6' : lista})
 
 #----------------BJ - ANEXO7-----------------#
-facturas = df['CANTIDAD_FACTURAS_VENCIDAS'] #L
+facturas = df['CANTIDAD_FACTURAS_VENCIDAS'] #En la columna L del archivo
 lista = []
 
 for i in range(0, registros): 
@@ -587,7 +592,7 @@ for i in range(0, registros):
 df_bj = pd.DataFrame({'ANEXO7' : lista})
 
 #----------------BK - ANEXO8-----------------#
-asignacion = df['DIAS_ASIGNACION'] #BR
+asignacion = df['DIAS_ASIGNACION'] #En la columna BR del archivo
 asignacion = asignacion.fillna(0)
 
 lista = []

@@ -1,13 +1,16 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta #B
-import re     #Para evaluar el mail
+from datetime import datetime, timedelta 
+import re   #Para evaluar por expresiones regulares el mail
 
 #Archivo a cargar
 archivo = 'Edesur/original_asigna1001.xlsx'
 df = pd.read_excel(archivo)
 
 #-------------Validador--------------#
+#Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
+#archivo a evaluar, si no se encuentra, se muestra cuál falta
+
 titulo = 'Validador de columnas'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
@@ -43,16 +46,17 @@ print(f'Cantidad de registros: {registros}')
 print(f'Cantidad de columnas: {df.shape[1]}')
 
 #-------------Utilidades--------------#
-lista_vacia = []
-for i in range (0, df.shape[0]):
+lista_vacia = [] #Utilizada para varias columnas que deben estar vacías
+for i in range (0, registros):
     lista_vacia.append(np.nan)
 
 #-----------A - NUMEROOPERACION-----------#
-id_cuenta = df['RUE'] #A
+id_cuenta = df['RUE'] #En columna A del archivo
 df_a = pd.DataFrame(id_cuenta)
 df_a.rename(columns={'RUE':'NUMEROOPERACION'}, inplace=True)
 
 #----------------B - FECHA-----------------#
+#Toda la columna posee la fecha de hoy
 lista_b = []
 for i in range (0, registros):
     lista_b.append(datetime.today().strftime('%d/%m/%Y'))
@@ -60,10 +64,10 @@ for i in range (0, registros):
 df_b = pd.DataFrame({'FECHA' : lista_b})
 
 #----------------C - NOMBRE-----------------#
-nombre_titular = df['NOM_CLI'] #P
-calle = df['CALLE'].astype(str) #W
-num = df['NRO'].fillna(0).astype(int) #X
-dias_mora = df['DIAS_ATRAS'] #M
+nombre_titular = df['NOM_CLI'] #En la columna P del archivo
+calle = df['CALLE'].astype(str) #En la columna W del archivo
+num = df['NRO'].fillna(0).astype(int) #En la columna X del archivo
+dias_mora = df['DIAS_ATRAS'] #En la columna M del archivo
 
 lista = []
 for i in range(0, registros):
@@ -77,6 +81,7 @@ for i in range(0, registros):
 df_c = pd.DataFrame({'NOMBRE' : lista})
 
 #----------------D - TIPODOCUMENTO-----------------#
+#Columna completa de valor "DNI"
 lista = []
 for i in range(0, registros):
     tipo_doc = 'DNI'
@@ -85,6 +90,7 @@ for i in range(0, registros):
 df_d = pd.DataFrame({'TIPODOCUMENTO' : lista})
 
 #----------------E - DOCUMENTO-----------------#
+#Se coloca el NUMEROOPERACION
 df_e = df_a.rename(columns={'NUMEROOPERACION':'DOCUMENTO'})
 
 #----------------F,G,H,I - CUIL, ESTADOCIVIL, FECHANACIMIENTO, SEXO-----------------#
@@ -110,7 +116,7 @@ for i in range(0, registros):
 df_j = pd.DataFrame({'DOMICILIO' : lista})
 
 #----------------K - LOCALIDAD-----------------#
-localidad = df['NRO_PART'] #AH
+localidad = df['NRO_PART'] #En la columna AH del archivo
 
 lista = []
 for i in localidad:
@@ -132,7 +138,7 @@ for i in range(0, registros):
 df_l = pd.DataFrame({'PROVINCIA' : lista})
 
 #----------------M - CODIGOPOSTAL-----------------#
-cp = df['C_POSTAL'].fillna(0).astype(int) #AE
+cp = df['C_POSTAL'].fillna(0).astype(int) #En la columna AE del archivo
 df_m = pd.DataFrame(cp)
 
 #----------------N - LABORAL-----------------#
@@ -153,12 +159,12 @@ dicc = {
 df_ps = pd.DataFrame(dicc)
 
 #----------------T - CAPITALOTORGADO-----------------#
-co = df['SALDO_GESTIONABLE'] / 1000000 #G
+co = df['SALDO_GESTIONABLE'] / 1000000 #En la columna G del archivo
 df_t = pd.DataFrame(co)
 df_t.rename(columns={'SALDO_GESTIONABLE':'CAPITALOTORGADO'}, inplace=True)
 
 #----------------U - SALDOTOTAL-----------------#
-df_u = df['SALDO_TOTAL'] / 1000000 #J
+df_u = df['SALDO_TOTAL'] / 1000000 #En la columna J del archivo
 df_u = pd.DataFrame(df_u)
 df_u.rename(columns={'SALDO_TOTAL':'SALDOTOTAL'}, inplace=True)
 
@@ -169,14 +175,13 @@ df_v = df_u.rename(columns={'SALDOTOTAL':'DEUDAVENCIDA'})
 df_w = df_t.rename(columns={'CAPITALOTORGADO':'PAGOMINIMO'})
 
 #----------------X - VTOIMPAGO-----------------#
-fechas = lista_b
-dias = dias_mora
+fechas = lista_b #Variable proveniente de la Sección B
+dias = dias_mora #Variable proveniente de la Sección C
 
 lista_fechas = []
 for fecha in fechas: 
     fecha = str(fecha)
-    fecha_cadena = fecha
-    fecha = datetime.strptime(fecha_cadena, '%d/%m/%Y')
+    fecha = datetime.strptime(fecha, '%d/%m/%Y')
     lista_fechas.append(fecha)
 
 lista_dias = []
@@ -200,9 +205,7 @@ for i in lista_3:
     fecha_final.append(formato)
 
 #Transformo a DataFrame
-dicc = {'VTOIMPAGO' : fecha_final}
-
-df_x = pd.DataFrame(dicc)
+df_x = pd.DataFrame({'VTOIMPAGO' : fecha_final})
 
 #----------------Y, Z-----------------#
 dicc = {
@@ -213,7 +216,7 @@ dicc = {
 df_yz = pd.DataFrame(dicc)
 
 #----------------AA - TIPOPRODUCTO-----------------#
-col_aa = df['TARIFA'] #E
+col_aa = df['TARIFA'] #En la columna E del archivo
 df_aa = pd.DataFrame(col_aa)
 df_aa.rename(columns={'TARIFA':'TIPOPRODUCTO'}, inplace=True)
 
@@ -226,7 +229,7 @@ dicc = {
 df_abac = pd.DataFrame(dicc)
 
 #---------AD, AE - DESCRIPCIONTELEFONO1, TIPOTELEFONO1---------#
-celular_1 = df['movil'] #T
+celular_1 = df['movil'] #En la columna T del archivo
 
 lista = []
 for i in celular_1:
@@ -255,7 +258,7 @@ for i in celular_1:
 df_af = pd.DataFrame({'DATOTELEFONO1' : lista})
 
 #---------AG, AH - DESCRIPCIONTELEFONO2, TIPOTELEFONO2---------#
-celular_2 = df['fijo'] #U
+celular_2 = df['fijo'] #En la columna U del archivo
 
 lista = []
 for i in celular_2:
@@ -284,7 +287,7 @@ for i in celular_2:
 df_ai = pd.DataFrame({'DATOTELEFONO2' : lista})
 
 #---------AJ, AK - DESCRIPCIONTELEFONO3, TIPOTELEFONO3---------#
-tel_fijo = df['NRO_TELEF'] #V
+tel_fijo = df['NRO_TELEF'] #En la columna V del archivo
 
 lista = []
 for i in tel_fijo:
@@ -313,7 +316,7 @@ for i in tel_fijo:
 df_as = pd.DataFrame({'DATOTELEFONO3' : lista})
 
 #---------AM, AN - DESCRIPCIONTELEFONO4, TIPOTELEFONO4---------#
-tel_fijo_2 = df['movil2'] #AT
+tel_fijo_2 = df['movil2'] #En la columna AT del archivo
 
 lista = []
 for i in tel_fijo_2:
@@ -366,7 +369,7 @@ dicc_columnas = {
 df_apau = pd.DataFrame(dicc_columnas)
 
 #----------------EXPRESIONES REGULARES EMAILS-----------------#
-df_mails = df[['email', 'email2']] #S,AS
+df_mails = df[['email', 'email2']] #En las columnas S y AS del archivo
 
 correctos = []
 incorrectos = []
@@ -465,7 +468,7 @@ for i in range(0, registros):
 df_av = pd.DataFrame({'EMAIL' : lista})
 
 #----------------AW - ANEXO1-----------------#
-tipo_cliente = df['TIPO_CLIENTE'] #AM
+tipo_cliente = df['TIPO_CLIENTE'] #En la columna AM del archivo
 
 lista = []
 for i in tipo_cliente: 
@@ -479,7 +482,7 @@ for i in tipo_cliente:
 df_aw = pd.DataFrame({'ANEXO1' : lista})
 
 #----------------AX - ANEXO2-----------------#
-estado = df['EST_CLI'] #C
+estado = df['EST_CLI'] #En la columna C del archivo
 
 lista = []
 for i in estado: 
@@ -501,7 +504,7 @@ for i in range(0, registros):
 df_ay = pd.DataFrame({'ANEXO3' : lista})
 
 #----------------AZ - ANEXO4-----------------#
-medidor = df['MEDIDOR'].fillna(0) #BB
+medidor = df['MEDIDOR'].fillna(0) #En la columna BB del archivo
 medidor = medidor.astype(str)
 
 lista = []
@@ -517,7 +520,7 @@ df_az = pd.DataFrame({'ANEXO4' : lista})
 df_az = df_az.replace('.0', '')
 
 #----------------BA - ANEXO5-----------------#
-dni = df['NRO_DOC'].fillna(0) #R
+dni = df['NRO_DOC'].fillna(0) #En la columna R del archivo
 dni = dni.astype(str)
 
 lista = []
@@ -540,7 +543,7 @@ for i in range(0, registros):
 df_bb = pd.DataFrame({'ANEXO6' : lista})
 
 #----------------BC - ANEXO7-----------------#
-asignacion = df['NUEVA_ASIGNACION'] #BR
+asignacion = df['NUEVA_ASIGNACION'] #En la columna BR del archivo
 asignacion = asignacion.fillna('')
 
 lista = []
@@ -555,7 +558,7 @@ for i in asignacion:
 df_bc = pd.DataFrame({'ANEXO7' : lista})
 
 #----------------BD - ANEXO8-----------------#
-vencimiento = df['FEC_VENC1'] #O
+vencimiento = df['FEC_VENC1'] #En la columna O del archivo
 
 lista = []
 for i in vencimiento: 
@@ -576,6 +579,7 @@ for i in vencimiento:
 df_bd = pd.DataFrame({'ANEXO8' : lista})
 
 #----------------BE - ANEXO9-----------------#
+#A toda la columna el mismo valor
 lista = []
 for i in range(0, registros):
     tipo_doc = 'OPERACION|FECHA FACTURA VENCIDA|'
@@ -584,12 +588,12 @@ for i in range(0, registros):
 df_be = pd.DataFrame({'ANEXO9' : lista})
 
 #----------------BF - IDCOMPANIA-----------------#
+#A toda la columna el mismo valor
 lista_45 = []
 for i in range(0, registros):
     lista_45.append(45)
 
 df_bf = pd.DataFrame({'IDCOMPANIA' : lista_45})
-
 
 #--------------CONCATENAR COLUMNAS-------------#
 df_concat = pd.concat([df_a, df_b, df_c, 
