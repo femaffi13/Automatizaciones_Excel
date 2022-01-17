@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 import re   #Para evaluar por expresiones regulares el mail
 
 #Archivo a cargar
-archivo = 'Edesur/original_asigna1001.xlsx'
-df = pd.read_excel(archivo)
+archivo = 'Edesur/Resultado_MasCobr.txt'
+df = pd.read_csv(archivo, sep='|')
 
 #-------------Validador--------------#
 #Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
