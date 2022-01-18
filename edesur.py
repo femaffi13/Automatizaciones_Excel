@@ -138,8 +138,8 @@ for i in range(0, registros):
 df_l = pd.DataFrame({'PROVINCIA' : lista})
 
 #----------------M - CODIGOPOSTAL-----------------#
-cp = df['C_POSTAL'].fillna(0).astype(int) #En la columna AE del archivo
-df_m = pd.DataFrame(cp)
+cp = pd.DataFrame(df['C_POSTAL'].fillna(0).astype(int)) #En la columna AE del archivo
+df_m = cp.rename(columns={'C_POSTAL':'CODIGOPOSTAL'})
 
 #----------------N - LABORAL-----------------#
 df_n = pd.DataFrame({'LABORAL' : lista_vacia})
@@ -159,12 +159,12 @@ dicc = {
 df_ps = pd.DataFrame(dicc)
 
 #----------------T - CAPITALOTORGADO-----------------#
-co = df['SALDO_GESTIONABLE'] / 1000000 #En la columna G del archivo
+co = df['SALDO_GESTIONABLE'] #En la columna G del archivo
 df_t = pd.DataFrame(co)
 df_t.rename(columns={'SALDO_GESTIONABLE':'CAPITALOTORGADO'}, inplace=True)
 
 #----------------U - SALDOTOTAL-----------------#
-df_u = df['SALDO_TOTAL'] / 1000000 #En la columna J del archivo
+df_u = df['SALDO_TOTAL'] #En la columna J del archivo
 df_u = pd.DataFrame(df_u)
 df_u.rename(columns={'SALDO_TOTAL':'SALDOTOTAL'}, inplace=True)
 
@@ -606,6 +606,6 @@ df_ax, df_ay, df_az, df_ba, df_bb, df_bc,
 df_bd, df_be, df_bf], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-df_concat.to_excel('Resultados/ESTUDIOALTAS1001.xlsx', index=False)
+df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
 print('Archivo creado correctamente')
 
