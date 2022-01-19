@@ -4,8 +4,9 @@ from datetime import datetime, timedelta
 import re   #Para evaluar por expresiones regulares el mail
 
 #Archivo a cargar
-archivo = 'Edenor/asigna_0511.xlsx'
-df = pd.read_excel(archivo)
+archivo = 'Edenor/resultados.txt'
+#df = pd.read_excel(archivo)
+df = pd.read_csv(archivo, sep=';', encoding='latin-1')
 
 #-------------Validador--------------#
 #Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
@@ -625,5 +626,9 @@ df_bc, df_bd, df_be, df_bf, df_bg,
 df_bh, df_bi, df_bj, df_bk, df_bl], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-df_concat.to_excel('Resultados/ESTUDIOALTAS0511.xlsx', index=False)
+
+df_concat = df_concat.applymap(lambda x: x.encode('unicode_escape').
+                 decode('utf-8') if isinstance(x, str) else x)
+
+df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
 print('Archivo creado correctamente')
