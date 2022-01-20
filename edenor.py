@@ -626,7 +626,6 @@ df_bc, df_bd, df_be, df_bf, df_bg,
 df_bh, df_bi, df_bj, df_bk, df_bl], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-
 df_concat = df_concat.applymap(lambda x: x.encode('unicode_escape').
                  decode('utf-8') if isinstance(x, str) else x)
 

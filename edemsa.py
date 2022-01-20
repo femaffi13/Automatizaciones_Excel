@@ -186,7 +186,35 @@ dicc = {
 df_akal = pd.DataFrame(dicc)
 
 #----------------AM - DATOTELEFONO1-----------------#
-df_am = pd.DataFrame(df['DATOTELEFONO1'])
+#df_am = pd.DataFrame(df['DATOTELEFONO1'])
+
+dt1 = df['DATOTELEFONO1']
+lista = []
+lista_nulos = []
+lista_no_validos = []
+for i in dt1: 
+    i = str(i)
+    i = i.replace('.0', '')
+    
+    if '-' in i:
+        i = i.replace('-', '')
+    if '.' in i:
+        i = i.replace('.', '')
+    if ' ' in i:
+        i = i.replace(' ', '')
+        
+    if len(i) == 10:
+        lista.append(int(i))
+    elif len(i) == 3:
+        lista.append(np.nan)
+        lista_nulos.append(i)
+    else:
+        lista.append(np.nan)
+        lista_no_validos.append(i)
+
+print(f'\nCantidad de valores distinto a 10 en DATOTELEFONO1: {len(lista_no_validos)}')
+df_am = pd.DataFrame({'DATOTELEFONO1' : lista})
+df_am = df_am.replace(lista_no_validos, np.nan)
 
 #----------------AN, AO - DESCRIPCIONTELEFONO2, TIPOTELEFONO2-----------------#
 celular_2 = df['DATOTELEFONO2'] #En la columna AH del archivo
@@ -209,7 +237,35 @@ df_anao = pd.DataFrame(dicc)
 
 #----------------AP - DATOTELEFONO2-----------------#
 #Supuestamente los teléfonos están normalizados
-df_ap = pd.DataFrame(df['DATOTELEFONO2'])
+#df_ap = pd.DataFrame(df['DATOTELEFONO2'])
+
+dt2 = df['DATOTELEFONO2']
+lista = []
+lista_nulos = []
+lista_no_validos = []
+for i in dt2: 
+    i = str(i)
+    i = i.replace('.0', '')
+    
+    if '-' in i:
+        i = i.replace('-', '')
+    if '.' in i:
+        i = i.replace('.', '')
+    if ' ' in i:
+        i = i.replace(' ', '')
+        
+    if len(i) == 10:
+        lista.append(int(i))
+    elif len(i) == 3:
+        lista.append(np.nan)
+        lista_nulos.append(i)
+    else:
+        lista.append(np.nan)
+        lista_no_validos.append(i)
+
+print(f'Cantidad de valores distinto a 10 en DATOTELEFONO2: {len(lista_no_validos)}')
+df_ap = pd.DataFrame({'DATOTELEFONO2' : lista})
+df_ap = df_ap.replace(lista_no_validos, np.nan)
 
 #----------------AQ, AR - DESCRIPCIONTELEFONO3, TIPOTELEFONO3-----------------#
 tel_fijo = df['DATOTELEFONO3'] 
@@ -232,7 +288,35 @@ df_aqar = pd.DataFrame(dicc)
 
 #----------------AS - DATOTELEFONO3-----------------#
 #Supuestamente los teléfonos están normalizados
-df_as = pd.DataFrame(df['DATOTELEFONO3'])
+#df_as = pd.DataFrame(df['DATOTELEFONO3'])
+
+dt3 = df['DATOTELEFONO3']
+lista = []
+lista_nulos = []
+lista_no_validos = []
+for i in dt3: 
+    i = str(i)
+    i = i.replace('.0', '')
+    
+    if '-' in i:
+        i = i.replace('-', '')
+    if '.' in i:
+        i = i.replace('.', '')
+    if ' ' in i:
+        i = i.replace(' ', '')
+        
+    if len(i) == 10:
+        lista.append(int(i))
+    elif len(i) == 3:
+        lista.append(np.nan)
+        lista_nulos.append(i)
+    else:
+        lista.append(np.nan)
+        lista_no_validos.append(i)
+
+print(f'Cantidad de valores distinto a 10 en DATOTELEFONO3: {len(lista_no_validos)}')
+df_as = pd.DataFrame({'DATOTELEFONO3' : lista})
+df_as = df_as.replace(lista_no_validos, np.nan)
 
 #----------------AT, AU - DESCRIPCIONTELEFONO4, TIPOTELEFONO4-----------------#
 tel_fijo_2 = df['DATOTELEFONO4'] 
@@ -254,7 +338,35 @@ dicc_columnas = {
 df_atau = pd.DataFrame(dicc_columnas)
 
 #----------------AV - DATOTELEFONO4-----------------#
-df_av = pd.DataFrame(df['DATOTELEFONO4'])
+#df_av = pd.DataFrame(df['DATOTELEFONO4'])
+
+dt4 = df['DATOTELEFONO4']
+lista = []
+lista_nulos = []
+lista_no_validos = []
+for i in dt4: 
+    i = str(i)
+    i = i.replace('.0', '')
+    
+    if '-' in i:
+        i = i.replace('-', '')
+    if '.' in i:
+        i = i.replace('.', '')
+    if ' ' in i:
+        i = i.replace(' ', '')
+        
+    if len(i) == 10:
+        lista.append(int(i))
+    elif len(i) == 3:
+        lista.append(np.nan)
+        lista_nulos.append(i)
+    else:
+        lista.append(np.nan)
+        lista_no_validos.append(i)
+
+print(f'Cantidad de valores distinto a 10 en DATOTELEFONO4: {len(lista_no_validos)}')
+df_av = pd.DataFrame({'DATOTELEFONO4' : lista})
+df_av = df_av.replace(lista_no_validos, np.nan)
 
 #----------------AW - TELEFONOSADICIONALES-----------------#
 df_aw = pd.DataFrame(df['TELEFONOSADICIONALES'])
