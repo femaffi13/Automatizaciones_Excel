@@ -168,6 +168,10 @@ df_u = df['SALDO_TOTAL'] #En la columna J del archivo
 df_u = pd.DataFrame(df_u)
 df_u.rename(columns={'SALDO_TOTAL':'SALDOTOTAL'}, inplace=True)
 
+#----------------U - SALDOTOTAL-----------------#
+lista = df['SALDO_GESTIONABLE'] + df['SALDO_NO_GESTIONABLE'] #En la columna G y H del archivo
+df_u = pd.DataFrame({'SALDOTOTAL' : lista})
+
 #----------------V - DEUDAVENCIDA-----------------#
 df_v = df_u.rename(columns={'SALDOTOTAL':'DEUDAVENCIDA'})
 
