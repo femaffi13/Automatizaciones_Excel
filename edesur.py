@@ -3,12 +3,17 @@ import numpy as np
 from datetime import datetime, timedelta 
 import re   #Para evaluar por expresiones regulares el mail
 
+titulo = 'Lectura de archivos. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
 #Archivo a cargar
 try:
-    archivo = 'Edesur/Resultado_MasCbr.txt'
-    df = pd.read_csv(archivo, sep='|')    
+    archivo = 'Edesur/Resultado_MasCobr.txt'
+    df = pd.read_csv(archivo, sep='|') 
+    print('Archivo leído correctamente')   
 except:
-  print("Error al leer el archivo")
+    print("Error al leer el archivo")
 
 #-------------Validador--------------#
 #Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
@@ -392,6 +397,15 @@ for nombre_columna, contenido in df_mails.items():
             nulos.append(i)
         
         else: 
+            if '<' in i:
+                i = i.replace('<', '')
+
+            if '>' in i:
+                i = i.replace('>', '')
+                
+            if ',' in i:
+                i = i.replace(',', '.')
+
             if '.@' in i:
                 i = i.replace('.@', '@')
                 
@@ -553,16 +567,22 @@ df_bb = pd.DataFrame({'ANEXO6' : lista})
 asignacion = df['NUEVA_ASIGNACION'] #En la columna BR del archivo
 asignacion = asignacion.fillna('')
 
+contador = 0
 lista = []
 for i in asignacion: 
     if (i == 1):
         lista.append(f'OPERACION|ASIGNACION|NUEVA')
+        contador += 1
     elif (i == 0): 
         lista.append(f'OPERACION|ASIGNACION|STOCK')
     else:
         lista.append(np.nan)
 
 df_bc = pd.DataFrame({'ANEXO7' : lista})
+
+titulo = f'Cantidad de Nuevas Asignaciones: {contador}'
+print(titulo.center(len(titulo)+70, '-')) 
+print('')
 
 #----------------BD - ANEXO8-----------------#
 vencimiento = df['FEC_VENC1'] #En la columna O del archivo
@@ -613,10 +633,13 @@ df_ax, df_ay, df_az, df_ba, df_bb, df_bc,
 df_bd, df_be, df_bf], axis=1)
 
 #--------------OBTENER EXCEL-------------#
+titulo = 'Creación del archivo. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
 try:
     df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
     print('Archivo creado correctamente')
+    print('')
 except:
-  print("No se pudo crear el archivo")
-
-
+    print("Error al crear el archivo")

@@ -2,13 +2,25 @@ import pandas as pd
 import numpy as np
 import re   #Para evaluar por expresiones regulares el mail
 
+titulo = 'Lectura de archivos. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
 #Archivo a cargar
-archivo = 'Edemsa/ESTUDIOALTAS1201.xlsx'
-df = pd.read_excel(archivo)
+try:
+    archivo = 'Edemsa/ESTUDIOALTAS1201.xlsx'
+    df = pd.read_excel(archivo)  
+    print('Primer archivo leído correctamente')
+except:
+    print("Error al leer el primer archivo")
 
 #Archivo a comparar el documento en columna BN
-archivo2 = 'Edemsa/doc1001.xlsx'
-df2 = pd.read_excel(archivo2)
+try:
+    archivo2 = 'Edemsa/doc1001.xlsx'
+    df2 = pd.read_excel(archivo2)
+    print('Segundo archivo leído correctamente')
+except:
+  print("Error al leer el segundo archivo")
 
 #-------------Validador--------------#
 #Evalúa si las columnas válidas(linea 21) se encuentran dentro del 
@@ -212,7 +224,11 @@ for i in dt1:
         lista.append(np.nan)
         lista_no_validos.append(i)
 
-print(f'\nCantidad de valores distinto a 10 en DATOTELEFONO1: {len(lista_no_validos)}')
+titulo = 'Informe Teléfonos'
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+print(f'Cantidad de valores distinto a 10 caracteres en DATOTELEFONO1: {len(lista_no_validos)}')
 df_am = pd.DataFrame({'DATOTELEFONO1' : lista})
 df_am = df_am.replace(lista_no_validos, np.nan)
 
@@ -263,7 +279,7 @@ for i in dt2:
         lista.append(np.nan)
         lista_no_validos.append(i)
 
-print(f'Cantidad de valores distinto a 10 en DATOTELEFONO2: {len(lista_no_validos)}')
+print(f'Cantidad de valores distinto a 10 caracteres en DATOTELEFONO2: {len(lista_no_validos)}')
 df_ap = pd.DataFrame({'DATOTELEFONO2' : lista})
 df_ap = df_ap.replace(lista_no_validos, np.nan)
 
@@ -314,7 +330,7 @@ for i in dt3:
         lista.append(np.nan)
         lista_no_validos.append(i)
 
-print(f'Cantidad de valores distinto a 10 en DATOTELEFONO3: {len(lista_no_validos)}')
+print(f'Cantidad de valores distinto a 10 caracteres en DATOTELEFONO3: {len(lista_no_validos)}')
 df_as = pd.DataFrame({'DATOTELEFONO3' : lista})
 df_as = df_as.replace(lista_no_validos, np.nan)
 
@@ -364,7 +380,7 @@ for i in dt4:
         lista.append(np.nan)
         lista_no_validos.append(i)
 
-print(f'Cantidad de valores distinto a 10 en DATOTELEFONO4: {len(lista_no_validos)}')
+print(f'Cantidad de valores distinto a 10 caracteres en DATOTELEFONO4: {len(lista_no_validos)}')
 df_av = pd.DataFrame({'DATOTELEFONO4' : lista})
 df_av = df_av.replace(lista_no_validos, np.nan)
 
@@ -514,6 +530,9 @@ df_bm = df['ANEXO10']
 dni_anteriores = list(df2['DOCUMENTO'])
 dni_actuales = list(df['DOCUMENTO'])
 
+titulo = 'Calculando nuevas asignaciones. Espere.. '
+print(titulo.center(len(titulo)+70, '-')) 
+
 lista = []
 for i in dni_actuales:
     if i in dni_anteriores:
@@ -528,8 +547,7 @@ for i in lista:
     if 'OPERACION|ASIGNACION|NUEVA' in i:
         contador += 1
 
-titulo = f'Nuevas Asignaciones: {contador}'
-print(titulo.center(len(titulo)+70, '-')) 
+print(f'Nuevas Asignaciones: {contador}') 
 
 #----------------BO - IDCOMPANIA-----------------#
 df_bo = df['IDCOMPANIA']
@@ -544,5 +562,13 @@ df_bd, df_be, df_bf, df_bg, df_bh, df_bi, df_bj,
 df_bk, df_bl, df_bm, df_bn, df_bo], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-df_concat.to_excel('./Resultados/ESTUDIOALTAS1201_r.xlsx', index=False)
-print('Archivo creado correctamente')
+titulo = 'Creación del archivo. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
+try:
+    df_concat.to_excel('./Resultados/ESTUDIOALTAS.xlsx', index=False)
+    print('Archivo creado correctamente')
+    print('')
+except:
+    print("Error al crear archivo")

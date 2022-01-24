@@ -1,11 +1,10 @@
-# Edenor
+# Edemsa
 
-El código **edenor.py** consiste en automatizar la tarea de análisis y procesamiento de columnas a partir del excel "asigna" originando un nuevo archivo de "altas" para luego ser subido al sistema de LOAN.  
+El código **edemsa.py** consiste en automatizar la tarea de análisis y procesamiento de columnas a partir del excel "asigna" originando un nuevo archivo de "altas" para luego ser subido al sistema de LOAN.  
 
 ## Librerías Usadas:  
 - **Pandas** &#8594; Tratamiento de los datos
 - **Numpy** &#8594; Para tratar valores nulos
-- **Datetime** &#8594; Realiza operaciones entre fechas y números (Columna X)
 - **Re** &#8594; Evalúa y filtra a través de expresiones regulares los emails erróneos  
 
 ## Análisis por columna 
@@ -15,7 +14,7 @@ Cada comentario inicia con la letra correspondiente a la columna del archivo exc
 
 Cada Sección finaliza con el DataFrame correspondiente de esa sección, con la nomenclatura "df_a" para la columna A  
 
-**obs:** En las columnas F,G,H,I, que son columnas vacías, se tratan en una misma sección, el nombre del DataFrame se forma a partir de la primer letra y la última. Siendo en este caso: "df_fi"
+**obs:** En las columnas G,H,I, que son columnas vacías, se tratan en una misma sección, el nombre del DataFrame se forma a partir de la primer letra y la última. Siendo en este caso: "df_gi"
 
 Al final del archivo se concatenan todos estos df_ con su letras correspondientes para luego obtener el archivo excel final que va a ser subido al sistema de LOAN.
 
@@ -25,8 +24,8 @@ Al ejecutar el código, se muestra un informe sobre:
 
 - La cantidad de filas y columnas del archivo a analizar.
 
-- Cantidad y porcentaje de registros sin ningún teléfono. 
+- Cantidad de teléfonos detectados con un largo distinto a 10 (LOAN acepta 10) que luego son eliminados
 
 - Cantidad de mails correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos se detecta. 
 
-- Cantidad de nuevas asignaciones
+- Cantidad de nuevas asignaciones 

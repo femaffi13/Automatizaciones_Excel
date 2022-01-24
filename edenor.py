@@ -3,11 +3,16 @@ import numpy as np
 from datetime import datetime, timedelta 
 import re   #Para evaluar por expresiones regulares el mail
 
+titulo = 'Lectura de archivos. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
 #Archivo a cargar
 try:
     archivo = 'Edenor/resultados.txt'
     #df = pd.read_excel(archivo)
-    df = pd.read_csv(archivo, sep=';', encoding='latin-1')
+    df = pd.read_csv(archivo, sep=';', encoding='latin-1', low_memory=False)
+    print('Archivo leído correctamente')
 except:
   print("Error al leer el archivo")
 
@@ -416,6 +421,15 @@ for nombre_columna, contenido in df_mails.items():
             nulos.append(i)
         
         else: 
+            if '<' in i:
+                i = i.replace('<', '')
+
+            if '>' in i:
+                i = i.replace('>', '')
+                
+            if ',' in i:
+                i = i.replace(',', '.')
+
             if '.@' in i:
                 i = i.replace('.@', '@')
                 
@@ -599,17 +613,24 @@ df_bj = pd.DataFrame({'ANEXO7' : lista})
 asignacion = df['DIAS_ASIGNACION'] #En la columna BR del archivo
 asignacion = asignacion.fillna(0)
 
+contador = 0
 lista = []
 for i in asignacion: 
     i = int(i)
     if (i == 0):
         lista.append(f'OPERACION|ASIGNACION|NUEVA')
+        contador += 1
     elif (i >= 1 and i <= 60): 
         lista.append(f'OPERACION|ASIGNACION|STOCK')
     elif i > 60:
         lista.append(f'OPERACION|ASIGNACION|NUEVA')
+        contador += 1
 
 df_bk = pd.DataFrame({'ANEXO8' : lista})
+
+titulo = f'Cantidad de Nuevas Asignaciones: {contador}'
+print(titulo.center(len(titulo)+70, '-')) 
+print('')
 
 #----------------BL - IDCOMPANIA-----------------#
 lista_52 = []
@@ -629,11 +650,16 @@ df_bc, df_bd, df_be, df_bf, df_bg,
 df_bh, df_bi, df_bj, df_bk, df_bl], axis=1)
 
 #--------------OBTENER EXCEL-------------#
+titulo = 'Creación del archivo. Espere.. '
+print('')
+print(titulo.center(len(titulo)+70, '-')) 
+
 try:
     df_concat = df_concat.applymap(lambda x: x.encode('unicode_escape').
                  decode('utf-8') if isinstance(x, str) else x)
 
     df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
     print('Archivo creado correctamente')
+    print('')
 except:
-    print("No se pudo crear el archivo")
+    print("Error al crear el archivo")

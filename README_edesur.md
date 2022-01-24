@@ -27,4 +27,6 @@ Al ejecutar el código, se muestra un informe sobre:
 
 - Cantidad y porcentaje de registros sin ningún teléfono. 
 
-- Cantidad de mails correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos se detecta. 
+- Cantidad de mails correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos se detecta.
+
+- Cantidad de nuevas asignaciones
