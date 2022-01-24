@@ -1,7 +1,6 @@
 # Edenor
 
 El código **edenor.py** consiste en automatizar la tarea de análisis y procesamiento de columnas a partir del excel "asigna" originando un nuevo archivo de "altas" para luego ser subido al sistema de LOAN.  
-El programa a su vez da un informe general de la cantidad de filas y columnas del archivo a analizar, cantidad y porcentaje de registros sin ningún teléfono y otro informe sobre los mails analizados donde se muestra la cantidad de correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos de mails se detecta. 
 
 ## Librerías Usadas:  
 - **Pandas** &#8594; Tratamiento de los datos
@@ -18,5 +17,14 @@ Cada Sección finaliza con el DataFrame correspondiente de esa sección, con la 
 
 **obs:** En las columnas F,G,H,I, que son columnas vacías, se tratan en una misma sección, el nombre del DataFrame se forma a partir de la primer letra y la última. Siendo en este caso: "df_fi"
 
+Al final del archivo se concatenan todos estos df_ con su letras correspondientes para luego obtener el archivo excel final que va a ser subido al sistema de LOAN.
 
+## Registro - Información mostrada
+Al ejecutar el código, se muestra un informe sobre: 
+- Si los nombres de las columnas que trae el excel a analizar son correctas, se muestra "Columnas válidas", si alguna no está incluida o si vino con distinto nombre, muestra el nombre de la columna que falta, en este caso se corrige el nombre o se reclama por la columna en cuestión. 
 
+- La cantidad de filas y columnas del archivo a analizar.
+
+- Cantidad y porcentaje de registros sin ningún teléfono. 
+
+- Cantidad de mails correctos, incorrectos, valores únicos de los incorrectos y cuantos valores nulos se detecta. 

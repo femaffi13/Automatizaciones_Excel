@@ -4,8 +4,11 @@ from datetime import datetime, timedelta
 import re   #Para evaluar por expresiones regulares el mail
 
 #Archivo a cargar
-archivo = 'Edesur/Resultado_MasCobr.txt'
-df = pd.read_csv(archivo, sep='|')
+try:
+    archivo = 'Edesur/Resultado_MasCbr.txt'
+    df = pd.read_csv(archivo, sep='|')    
+except:
+  print("Error al leer el archivo")
 
 #-------------Validador--------------#
 #Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
@@ -31,7 +34,7 @@ for i in columnas:
 if not columnas_validas:
     print('Columnas válidas')
 else: 
-    print(f'Valores faltantes: {columnas_validas}')
+    print(f'Columnas faltantes: {columnas_validas}')
 
 #-------------Info general--------------#
 titulo = 'Información general'
@@ -610,6 +613,10 @@ df_ax, df_ay, df_az, df_ba, df_bb, df_bc,
 df_bd, df_be, df_bf], axis=1)
 
 #--------------OBTENER EXCEL-------------#
-df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
-print('Archivo creado correctamente')
+try:
+    df_concat.to_excel('Resultados/ESTUDIOALTAS.xlsx', index=False)
+    print('Archivo creado correctamente')
+except:
+  print("No se pudo crear el archivo")
+
 
