@@ -16,7 +16,7 @@ except:
     print("Error al leer el archivo")
 
 #-------------Validador--------------#
-#Evalúa si las columnas válidas(linea 19) se encuentran dentro del 
+#Evalúa si las columnas válidas(linea 27) se encuentran dentro del 
 #archivo a evaluar, si no se encuentra, se muestra cuál falta
 
 titulo = 'Validador de columnas'
@@ -381,100 +381,260 @@ dicc_columnas = {
 df_apau = pd.DataFrame(dicc_columnas)
 
 #----------------EXPRESIONES REGULARES EMAILS-----------------#
-df_mails = df[['email', 'email2']] #En las columnas S y AS del archivo
+# df_mails = df[['email', 'email2']] #En las columnas S y AS del archivo
+
+# correctos = []
+# incorrectos = []
+# nulos = []
+
+# for nombre_columna, contenido in df_mails.items(): 
+#     #A cada valor lo convierto a formato str
+#     contenido = contenido.apply(str)
+
+#     #Recorro cada valor
+#     for i in contenido: 
+#         if (i == 'nan' or i == 'sinmail@sinmail.com' or i == '1@1.com'):
+#             nulos.append(i)
+        
+#         else: 
+#             if '<' in i:
+#                 i = i.replace('<', '')
+
+#             if '>' in i:
+#                 i = i.replace('>', '')
+                
+#             if ',' in i:
+#                 i = i.replace(',', '.')
+
+#             if '.@' in i:
+#                 i = i.replace('.@', '@')
+                
+#             if 'á' in i:
+#                 i = i.replace('á', 'a')
+                
+#             if 'é' in i:
+#                 i = i.replace('é', 'e')
+
+#             if 'í' in i:
+#                 i = i.replace('í', 'i')
+            
+#             if 'ó' in i:
+#                 i = i.replace('ó', 'o')
+
+#             if 'ú' in i:
+#                 i = i.replace('ú', 'u')
+
+#             if 'ñ' in i:
+#                 i = i.replace('ñ', 'n')
+
+#             if 'mail' in i[-4:]:
+#                 i = i.replace('mail', 'mail.com')
+
+#             if 'outlook' in i[-7:]:
+#                 i = i.replace('outlook', 'outlook.com')
+
+#             if 'hot' in i[-3:]:
+#                 i = i.replace('hot', 'hotmail.com')
+
+#             if ' ' in i:
+#                 i = i.replace(' ', '.')
+                
+#             expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+#             variable = re.match(expresion_regular, i)
+
+#             if variable is None: 
+#                 incorrectos.append(i)
+
+#             else:
+#                 correctos.append(i)
+
+# titulo = 'Informe Mails'
+# print('')
+# print(titulo.center(len(titulo)+70, '-')) 
+
+# #Valores correctos
+# print(f'Cantidad Correctos: {len(correctos)}')
+# #print(f'Valores Correctos: {correctos}\n')
+
+# #Valores incorrectos
+# print(f'Cantidad incorrectos: {len(incorrectos)}')
+# #print(f'Valores Incorrectos: {incorrectos}\n')
+        
+# #Valores únicos de incorrectos
+# unique_list = list(dict.fromkeys(incorrectos))
+# print(f'Valores únicos de incorrectos: {unique_list}\n')
+
+# #Cantidad de nulos
+# print(f'Cantidad de nulos: {len(nulos)}\n')
+
+# #-----------------Elimino los valores incorrectos----------------#
+# df_mails = df_mails.replace(incorrectos, np.nan)
+# df_mails = df_mails.replace(0, np.nan)
+
+df_email = df['email']
+df_email2 = df['email2']
 
 correctos = []
 incorrectos = []
 nulos = []
-
-for nombre_columna, contenido in df_mails.items(): 
+for nombre_columna, i in df_email.items(): 
     #A cada valor lo convierto a formato str
-    contenido = contenido.apply(str)
+    i = str(i)
+    
+    if i == 'nan':
+        nulos.append(i)
+    elif len(i) <= 14:
+        incorrectos.append(i)
+            #15 para arriba aceptados
+    else: 
+        if '<' in i:
+            i = i.replace('<', '')
 
-    #Recorro cada valor
-    for i in contenido: 
-        if (i == 'nan' or i == 'sinmail@sinmail.com' or i == '1@1.com'):
-            nulos.append(i)
-        
-        else: 
-            if '<' in i:
-                i = i.replace('<', '')
-
-            if '>' in i:
-                i = i.replace('>', '')
+        if '>' in i:
+            i = i.replace('>', '')
                 
-            if ',' in i:
-                i = i.replace(',', '.')
+        if ',' in i:
+            i = i.replace(',', '.')
 
-            if '.@' in i:
-                i = i.replace('.@', '@')
+        if '.@' in i:
+            i = i.replace('.@', '@')
                 
-            if 'á' in i:
-                i = i.replace('á', 'a')
+        if 'á' in i:
+            i = i.replace('á', 'a')
                 
-            if 'é' in i:
-                i = i.replace('é', 'e')
+        if 'é' in i:
+            i = i.replace('é', 'e')
 
-            if 'í' in i:
-                i = i.replace('í', 'i')
+        if 'í' in i:
+            i = i.replace('í', 'i')
             
-            if 'ó' in i:
-                i = i.replace('ó', 'o')
+        if 'ó' in i:
+            i = i.replace('ó', 'o')
 
-            if 'ú' in i:
-                i = i.replace('ú', 'u')
+        if 'ú' in i:
+            i = i.replace('ú', 'u')
 
-            if 'ñ' in i:
-                i = i.replace('ñ', 'n')
+        if 'ñ' in i:
+            i = i.replace('ñ', 'n')
 
-            if 'mail' in i[-4:]:
-                i = i.replace('mail', 'mail.com')
+        if 'mail' in i[-4:]:
+            i = i.replace('mail', 'mail.com')
 
-            if 'outlook' in i[-7:]:
-                i = i.replace('outlook', 'outlook.com')
+        if 'outlook' in i[-7:]:
+            i = i.replace('outlook', 'outlook.com')
 
-            if 'hot' in i[-3:]:
-                i = i.replace('hot', 'hotmail.com')
+        if 'hot' in i[-3:]:
+            i = i.replace('hot', 'hotmail.com')
 
-            if ' ' in i:
-                i = i.replace(' ', '.')
+        if ' ' in i:
+            i = i.replace(' ', '.')
                 
-            expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
-            variable = re.match(expresion_regular, i)
+        expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+        variable = re.match(expresion_regular, i)
 
-            if variable is None: 
-                incorrectos.append(i)
+        if variable is None: 
+            incorrectos.append(i)
 
-            else:
-                correctos.append(i)
+        else:
+            correctos.append(i)
+
+#Evalúo la segunda columna
+correctos2 = []
+incorrectos2 = []
+nulos2 = []
+for nombre_columna, i in df_email2.items(): 
+    #A cada valor lo convierto a formato str
+    i = str(i)
+    
+    if i == 'nan':
+        nulos2.append(i)
+    elif len(i) <= 14:
+        incorrectos2.append(i)
+            #15 para arriba aceptados
+    else: 
+        if '<' in i:
+            i = i.replace('<', '')
+
+        if '>' in i:
+            i = i.replace('>', '')
+                
+        if ',' in i:
+            i = i.replace(',', '.')
+
+        if '.@' in i:
+            i = i.replace('.@', '@')
+                
+        if 'á' in i:
+            i = i.replace('á', 'a')
+                
+        if 'é' in i:
+            i = i.replace('é', 'e')
+
+        if 'í' in i:
+            i = i.replace('í', 'i')
+            
+        if 'ó' in i:
+            i = i.replace('ó', 'o')
+
+        if 'ú' in i:
+            i = i.replace('ú', 'u')
+
+        if 'ñ' in i:
+            i = i.replace('ñ', 'n')
+
+        if 'mail' in i[-4:]:
+            i = i.replace('mail', 'mail.com')
+
+        if 'outlook' in i[-7:]:
+            i = i.replace('outlook', 'outlook.com')
+
+        if 'hot' in i[-3:]:
+            i = i.replace('hot', 'hotmail.com')
+
+        if ' ' in i:
+            i = i.replace(' ', '.')
+                
+        expresion_regular = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+        variable = re.match(expresion_regular, i)
+
+        if variable is None: 
+            incorrectos2.append(i)
+
+        else:
+            correctos2.append(i)
 
 titulo = 'Informe Mails'
 print('')
 print(titulo.center(len(titulo)+70, '-')) 
 
 #Valores correctos
-print(f'Cantidad Correctos: {len(correctos)}')
+print(f'Cantidad Correctos: {len(correctos) + len(correctos2)}')
 #print(f'Valores Correctos: {correctos}\n')
 
 #Valores incorrectos
-print(f'Cantidad incorrectos: {len(incorrectos)}')
-#print(f'Valores Incorrectos: {incorrectos}\n')
+print(f'Cantidad incorrectos: {len(incorrectos) + len(incorrectos2)}')
+#print(f'Valores Incorrectos: {incorrectos} \n {incorrectos2}\n')
         
 #Valores únicos de incorrectos
 unique_list = list(dict.fromkeys(incorrectos))
-print(f'Valores únicos de incorrectos: {unique_list}\n')
+print(f'Valores únicos de incorrectos columna 1: {unique_list}\n')
+unique_list = list(dict.fromkeys(incorrectos2))
+print(f'Valores únicos de incorrectos columna 2: {unique_list}\n')
 
 #Cantidad de nulos
-print(f'Cantidad de nulos: {len(nulos)}\n')
+print(f'Cantidad de nulos: {len(nulos) + len(nulos2)}\n')
 
 #-----------------Elimino los valores incorrectos----------------#
-df_mails = df_mails.replace(incorrectos, np.nan)
-df_mails = df_mails.replace(0, np.nan)
+df_email = df_email.replace(incorrectos, np.nan)
+df_email = df_email.replace(0, np.nan)
+
+df_email2 = df_email2.replace(incorrectos, np.nan)
+df_email2 = df_email2.replace(0, np.nan)
 
 #----------------AV - EMAIL-----------------#
 #Si no encuentra un mail en mail_2, trae el que encuentre en mail_2
-mail_1 = df_mails['email'].astype(str)
-mail_2 = df_mails['email2'].astype(str)
+mail_1 = df_email.astype(str)
+mail_2 = df_email2.astype(str)
 
 lista = []
 for i in range(0, registros):
